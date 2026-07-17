@@ -26,45 +26,14 @@ namespace OnibusExpress.Domain.Entities
         public StatusReserva Status { get; private set; }
         public string CodigoReserva { get; private set; } = string.Empty;
 
-        public void AlterarAssento(int numeroAssento)
-        {
-            if (Status == StatusReserva.Cancelada)
-                throw new InvalidOperationException(
-                    "Não é possível alterar uma reserva cancelada.");
-
-            NumeroAssento = numeroAssento;
-        }
-
-        public void Confirmar()
-        {
-            if (Status == StatusReserva.Cancelada)
-                throw new InvalidOperationException(
-                    "Não é possível confirmar uma reserva cancelada.");
-
-            Status = StatusReserva.Confirmada;
-        }
-
         public void Cancelar()
         {
-            if (Status == StatusReserva.Concluida)
-                throw new InvalidOperationException(
-                    "Não é possível cancelar uma reserva concluída.");
-
             Status = StatusReserva.Cancelada;
-        }
-
-        public void Concluir()
-        {
-            if (Status != StatusReserva.Confirmada)
-                throw new InvalidOperationException(
-                    "Somente reservas confirmadas podem ser concluídas.");
-
-            Status = StatusReserva.Concluida;
         }
 
         private static string GerarCodigoReserva()
         {
-            return $"ONB-{Guid.NewGuid():N}"[..12].ToUpperInvariant();
+            return $"ONB-{Guid.NewGuid():N}"[..8].ToUpperInvariant();
         }
     }
 }

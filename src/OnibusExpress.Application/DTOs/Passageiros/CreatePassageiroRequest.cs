@@ -4,5 +4,5 @@
     string Nome,
     string Cpf,
     string Email,
-    DateOnly DataNascimento);
+    DateTime DataNascimento);
 }

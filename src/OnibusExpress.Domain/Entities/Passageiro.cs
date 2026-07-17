@@ -7,7 +7,7 @@ namespace OnibusExpress.Domain.Entities
             string nome,
             string cpf,
             string email,
-            DateOnly dataNascimento)
+            DateTime dataNascimento)
         {
             Id = Guid.NewGuid();
             Nome = nome;
@@ -20,13 +20,13 @@ namespace OnibusExpress.Domain.Entities
         public string Nome { get; private set; } = string.Empty;
         public string Cpf { get; private set; } = string.Empty;
         public string Email { get; private set; } = string.Empty;
-        public DateOnly DataNascimento { get; private set; }
+        public DateTime DataNascimento { get; private set; }
         public IEnumerable<Reserva> Reservas { get; private set; } = [];
 
         public void Atualizar(
             string nome,
             string email,
-            DateOnly dataNascimento)
+            DateTime dataNascimento)
         {
             Nome = nome;
             Email = email;

@@ -19,8 +19,8 @@ namespace OnibusExpress.Api.Controllers
             CancellationToken cancellationToken)
         {
             await _application.CriarAsync(
-                request,
-                cancellationToken);
+                    request,
+                    cancellationToken);
 
             return Created();
         }

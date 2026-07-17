@@ -5,8 +5,8 @@ namespace OnibusExpress.Application.DTOs.Viagens
     public record ViagemResponse(
         Guid Id,
         Guid RotaId,
-        RotaResponse Rota,
         DateTime DataHoraPartida,
         decimal PrecoBase,
-        int AssentosDisponiveis);
+        int AssentosDisponiveis,
+        RotaResponse Rota);
 }

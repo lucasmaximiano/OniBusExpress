@@ -18,15 +18,5 @@
         public string Destino { get; private set; } = string.Empty;
         public TimeSpan DuracaoEstimada { get; private set; }
         public IEnumerable<Viagem> Viagens { get; private set; } = [];
-
-        public void Atualizar(
-            string origem,
-            string destino,
-            TimeSpan duracaoEstimada)
-        {
-            Origem = origem;
-            Destino = destino;
-            DuracaoEstimada = duracaoEstimada;
-        }
     }
 }
