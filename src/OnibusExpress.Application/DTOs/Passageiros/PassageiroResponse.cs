@@ -1,6 +1,6 @@
 ﻿namespace OnibusExpress.Application.DTOs.Passageiros
 {
-    public sealed record PassageiroResponse(
+    public record PassageiroResponse(
      Guid Id,
      string Nome,
      string Cpf,

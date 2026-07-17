@@ -1,40 +1,60 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OnibusExpress.Application.DTOs.Viagens;
+using OnibusExpress.Application.Interfaces;
 
 namespace OnibusExpress.Api.Controllers
 {
     [ApiController]
     [Route("api/viagens")]
     [Produces("application/json")]
-    public class ViagensController : ControllerBase
+    public class ViagensController(IViagensApplication application) : ControllerBase
     {
+        private readonly IViagensApplication _application = application;
+
         [HttpPost]
-        public IActionResult Criar()
+        [ProducesResponseType(typeof(ViagemResponse), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> CriarAsync(
+            [FromBody] CreateViagemRequest request,
+            CancellationToken cancellationToken)
         {
-            return Ok();
-        }
+            await _application.CriarAsync(
+                request,
+                cancellationToken);
 
-        [HttpPut("{id:guid}")]
-        public IActionResult Atualizar(Guid id)
-        {
-            return Ok();
-        }
-
-        [HttpGet]
-        public IActionResult ObterTodas()
-        {
-            return Ok();
+            return Created();
         }
 
         [HttpGet("{id:guid}")]
-        public IActionResult ObterPorId(Guid id)
+        [ProducesResponseType(typeof(ViagemResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> ObterPorId(
+            Guid id,
+            CancellationToken cancellationToken)
         {
-            return Ok();
+            ViagemResponse? response = await _application.ObterPorIdAsync(
+                id,
+                cancellationToken);
+
+            if (response is null)
+                return NotFound();
+
+            return Ok(response);
         }
 
-        [HttpDelete("{id:guid}")]
-        public IActionResult Excluir(Guid id)
+        [HttpGet("filtro")]
+        [ProducesResponseType(typeof(IEnumerable<ViagemResponse>),StatusCodes.Status200OK)]
+        public async Task<IActionResult> ObterPorFiltro(
+            [FromQuery] string origem,
+            [FromQuery] string destino,
+            CancellationToken cancellationToken)
         {
-            return NoContent();
+            ViagemResponse? response = await _application.ObterPorFiltro(
+                origem,
+                destino,
+                cancellationToken);
+
+            return Ok(response);
         }
     }
 }

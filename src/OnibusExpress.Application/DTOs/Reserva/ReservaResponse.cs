@@ -4,7 +4,7 @@ using OnibusExpress.Domain.Enums;
 
 namespace OnibusExpress.Application.DTOs.Reserva
 {
-    public sealed record ReservaResponse(
+    public record ReservaResponse(
       Guid Id,
       Guid ViagemId,
       ViagemResponse Viagem,

@@ -3,7 +3,7 @@ using OnibusExpress.Application.DTOs.Viagens;
 
 namespace OnibusExpress.Application.Validators.Viagens
 {
-    public sealed class CreateViagemRequestValidator
+    public class CreateViagemRequestValidator
      : AbstractValidator<CreateViagemRequest>
     {
         public CreateViagemRequestValidator()

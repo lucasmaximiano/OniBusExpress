@@ -3,7 +3,7 @@ using OnibusExpress.Application.DTOs.Reserva;
 
 namespace OnibusExpress.Application.Validators.Reserva
 {
-    public sealed class CreateReservaRequestValidator
+    public class CreateReservaRequestValidator
       : AbstractValidator<CreateReservaRequest>
     {
         public CreateReservaRequestValidator()

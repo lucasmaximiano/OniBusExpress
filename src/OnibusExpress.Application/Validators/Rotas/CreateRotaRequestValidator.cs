@@ -3,7 +3,7 @@ using OnibusExpress.Application.DTOs.Rotas;
 
 namespace OnibusExpress.Application.Validators.Rotas
 {
-    public sealed class CreateRotaRequestValidator
+    public class CreateRotaRequestValidator
     : AbstractValidator<CreateRotaRequest>
     {
         public CreateRotaRequestValidator()

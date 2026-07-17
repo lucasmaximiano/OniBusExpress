@@ -1,41 +1,65 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OnibusExpress.Application.DTOs.Passageiros;
+using OnibusExpress.Application.Interfaces;
 
 namespace OnibusExpress.Api.Controllers
 {
     [ApiController]
     [Route("api/passageiros")]
     [Produces("application/json")]
-    public class PassageirosController : ControllerBase
+    public class PassageirosController(IPassageirosApplication application) : ControllerBase
     {
+        private readonly IPassageirosApplication _application = application;
 
         [HttpPost]
-        public IActionResult Criar()
+        [ProducesResponseType(typeof(PassageiroResponse), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> CriarAsync(
+            [FromBody] CreatePassageiroRequest request,
+            CancellationToken cancellationToken)
         {
-            return Ok();
-        }
+            await _application.CriarAsync(
+                request,
+                cancellationToken);
 
-        [HttpPut("{id:guid}")]
-        public IActionResult Atualizar(Guid id)
-        {
-            return Ok();
-        }
-
-        [HttpGet]
-        public IActionResult ObterTodos()
-        {
-            return Ok();
+            return Created();
         }
 
         [HttpGet("{id:guid}")]
-        public IActionResult ObterPorId(Guid id)
+        [ProducesResponseType(typeof(PassageiroResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> ObterPorIdAsync(
+            Guid id,
+            CancellationToken cancellationToken)
         {
-            return Ok();
+            PassageiroResponse? response = await _application.ObterPorIdAsync(
+                id,
+                cancellationToken);
+
+            if (response is null)
+                return NotFound();
+
+            return Ok(response);
         }
 
-        [HttpDelete("{id:guid}")]
-        public IActionResult Excluir(Guid id)
+        [HttpPut("{id:guid}")]
+        [ProducesResponseType(typeof(PassageiroResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ValidationProblemDetails),StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> AtualizarAsync(
+          Guid id,
+          [FromBody] UpdatePassageiroRequest request,
+          CancellationToken cancellationToken)
         {
-            return NoContent();
+            PassageiroResponse? response = await _application.AtualizarAsync(
+                id,
+                request,
+                cancellationToken);
+
+            if (response is null)
+                return NotFound();
+
+            return Ok(response);
         }
     }
 }
