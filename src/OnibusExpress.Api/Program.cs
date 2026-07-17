@@ -1,3 +1,4 @@
+using OnibusExpress.Api.Middlewares;
 using OnibusExpress.Application;
 using OnibusExpress.Infrastructure;
 
@@ -11,6 +12,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+app.UseValidationExceptionMiddleware();
 
 app.UseSwagger();
 app.UseSwaggerUI();

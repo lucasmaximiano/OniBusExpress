@@ -38,16 +38,18 @@ namespace OnibusExpress.Application.Service
                 throw new InvalidOperationException(
                     "Não é possível reservar passagem para uma viagem já realizada.");
 
+            if (viagem.AssentosDisponiveis < request.NumeroAssento)
+                throw new InvalidOperationException(
+                    "O número do assento informado excede a quantidade de assentos disponíveis para esta viagem.");
+
             Reserva? assentoOcupado = await _reservaRepository.ObterReservaPorViagemEAssentoAsync(
                 request.ViagemId,
                 request.NumeroAssento,
                 cancellationToken);
 
             if (assentoOcupado != null)
-            {
                 throw new InvalidOperationException(
                     $"O assento {request.NumeroAssento} já está ocupado nesta viagem.");
-            }
 
             Reserva reserva = new(
                         request.ViagemId, 
@@ -72,15 +74,6 @@ namespace OnibusExpress.Application.Service
             return reserva is null
                 ? null
                 : MapToResponse(reserva);
-        }
-
-        public async Task<IEnumerable<ReservaResponse>> ObterTodasAsync(
-            CancellationToken cancellationToken)
-        {
-            IEnumerable<Reserva> reservas = await _reservaRepository.ObterTodasAsync(
-                                                            cancellationToken);
-
-            return reservas.Select(MapToResponse);
         }
 
         public async Task CancelarAsync(

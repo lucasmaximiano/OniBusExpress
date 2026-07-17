@@ -21,7 +21,7 @@ namespace OnibusExpress.Domain.Entities
         public string Cpf { get; private set; } = string.Empty;
         public string Email { get; private set; } = string.Empty;
         public DateTime DataNascimento { get; private set; }
-        public IEnumerable<Reserva> Reservas { get; private set; } = [];
+        public List<Reserva> Reservas { get; private set; }
 
         public void Atualizar(
             string nome,

@@ -22,7 +22,7 @@ namespace OnibusExpress.Domain.Entities
         public DateTime DataHoraPartida { get; private set; }
         public decimal PrecoBase { get; private set; }
         public int AssentosDisponiveis { get; private set; }
-        public IEnumerable<Reserva> Reservas { get; private set; } = [];
+        public List<Reserva> Reservas { get; private set; }
 
         public void Atualizar(
             Guid rotaId,

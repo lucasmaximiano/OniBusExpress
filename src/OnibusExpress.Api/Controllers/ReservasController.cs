@@ -42,17 +42,6 @@ namespace OnibusExpress.Api.Controllers
             return Ok(response);
         }
 
-        [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<ReservaResponse>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> ObterTodas(
-            CancellationToken cancellationToken)
-        {
-            IEnumerable<ReservaResponse> response = await _application.ObterTodasAsync(
-                cancellationToken);
-
-            return Ok(response);
-        }
-
         [HttpDelete("{codigoReserva}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

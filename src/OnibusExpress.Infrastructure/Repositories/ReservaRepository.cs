@@ -33,16 +33,6 @@ namespace OnibusExpress.Infrastructure.Repositories
                     cancellationToken);
         }
 
-        public async Task<IEnumerable<Reserva>> ObterTodasAsync(
-            CancellationToken cancellationToken)
-        {
-            return await _context.Reservas
-                .Include(x => x.Viagem)
-                    .ThenInclude(x => x.Rota)
-                .Include(x => x.Passageiro)
-                .ToListAsync(cancellationToken);
-        }
-
         public async Task<Reserva?> ObterReservaPorViagemEAssentoAsync(
             Guid viagemId,
             int numeroAssento,

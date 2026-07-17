@@ -32,18 +32,23 @@ namespace OnibusExpress.Infrastructure.Repositories
         }
 
         public async Task<IEnumerable<Viagem>> ObterPorFiltroAsync(
-            string viagem,
+            string origem,
             string destino,
             CancellationToken cancellationToken)
         {
-            return await _context.Viagens
-                .Include(x => x.Rota)
-                .Where(x =>
-                    (string.IsNullOrWhiteSpace(viagem) ||
-                     x.Rota.Origem.Contains(viagem)) &&
-                    (string.IsNullOrWhiteSpace(destino) ||
-                     x.Rota.Destino.Contains(destino)))
-                .ToListAsync(cancellationToken);
+            IQueryable<Viagem> query = _context.Viagens
+                  .AsNoTracking()
+                  .Include(x => x.Rota);
+
+            if (!string.IsNullOrEmpty(origem))
+                query = query.Where(x =>
+                    x.Rota.Origem.Contains(origem));
+
+            if (!string.IsNullOrEmpty(destino))
+                query = query.Where(x =>
+                    x.Rota.Destino.Contains(destino));
+
+            return await query.ToListAsync(cancellationToken);
         }
     }
 }

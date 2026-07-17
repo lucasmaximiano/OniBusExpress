@@ -45,12 +45,12 @@ namespace OnibusExpress.Application.Service
         }
 
         public async Task<IEnumerable<ViagemResponse>> ObterPorFiltroAsync(
-            string viagem,
+            string origem,
             string destino,
             CancellationToken cancellationToken)
         {
             IEnumerable<Viagem> viagens = await _viagensRepository.ObterPorFiltroAsync(
-                viagem,
+                origem,
                 destino,
                 cancellationToken);
 

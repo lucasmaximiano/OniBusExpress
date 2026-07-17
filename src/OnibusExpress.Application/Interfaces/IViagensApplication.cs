@@ -13,7 +13,7 @@ namespace OnibusExpress.Application.Interfaces
            CancellationToken cancellationToken);
 
         Task<IEnumerable<ViagemResponse>> ObterPorFiltroAsync(
-            string viagem,
+            string origem,
             string destino,
             CancellationToken cancellationToken);
     }

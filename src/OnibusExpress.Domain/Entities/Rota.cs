@@ -17,6 +17,6 @@
         public string Origem { get; private set; } = string.Empty;
         public string Destino { get; private set; } = string.Empty;
         public TimeSpan DuracaoEstimada { get; private set; }
-        public IEnumerable<Viagem> Viagens { get; private set; } = [];
+        public List<Viagem> Viagens { get; private set; }
     }
 }

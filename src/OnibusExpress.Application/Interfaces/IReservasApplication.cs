@@ -12,9 +12,6 @@ namespace OnibusExpress.Application.Interfaces
            string codigoReserva,
            CancellationToken cancellationToken);
 
-        Task<IEnumerable<ReservaResponse>> ObterTodasAsync(
-            CancellationToken cancellationToken);
-
         Task CancelarAsync(
             string codigoReserva,
             CancellationToken cancellationToken);
