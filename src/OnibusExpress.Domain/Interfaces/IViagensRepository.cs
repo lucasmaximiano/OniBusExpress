@@ -12,7 +12,7 @@ namespace OnibusExpress.Domain.Interfaces
            Guid id,
            CancellationToken cancellationToken);
 
-        Task<Viagem?> ObterPorFiltro(
+        Task<IEnumerable<Viagem>> ObterPorFiltroAsync(
             string viagem,
             string destino,
             CancellationToken cancellationToken);

@@ -1,28 +1,68 @@
-﻿using OnibusExpress.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using OnibusExpress.Domain.Entities;
 using OnibusExpress.Domain.Interfaces;
+using OnibusExpress.Infrastructure.Context;
 
 namespace OnibusExpress.Infrastructure.Repositories
 {
-    public class ReservaRepository : IReservaRepository
+    public class ReservaRepository(OnibusExpressContext context) : IReservaRepository
     {
-        public Task CriarAsync(Reserva request, CancellationToken cancellationToken)
+        private readonly OnibusExpressContext _context = context;
+
+        public async Task CriarAsync(
+            Reserva request,
+            CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            await _context.Reservas.AddAsync(
+                request,
+                cancellationToken);
+
+            await _context.SaveChangesAsync(cancellationToken);
         }
 
-        public Task<Reserva?> ObterPorCodigoAsync(string codigoReserva, CancellationToken cancellationToken)
+        public async Task<Reserva?> ObterPorCodigoAsync(
+            string codigoReserva,
+            CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return await _context.Reservas
+                .Include(x => x.Viagem)
+                    .ThenInclude(x => x.Rota)
+                .Include(x => x.Passageiro)
+                .FirstOrDefaultAsync(
+                    x => x.CodigoReserva == codigoReserva,
+                    cancellationToken);
         }
 
-        public Task<IEnumerable<Reserva>> ObterTodasAsync(CancellationToken cancellationToken)
+        public async Task<IEnumerable<Reserva>> ObterTodasAsync(
+            CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return await _context.Reservas
+                .Include(x => x.Viagem)
+                    .ThenInclude(x => x.Rota)
+                .Include(x => x.Passageiro)
+                .ToListAsync(cancellationToken);
         }
 
-        public Task CancelarAsync(string codigoReserva, CancellationToken cancellationToken)
+        public async Task<Reserva?> ObterReservaPorViagemEAssentoAsync(
+            Guid viagemId,
+            int numeroAssento,
+            CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return await _context.Reservas
+                .Include(x => x.Viagem)
+                .Include(x => x.Passageiro)
+                .FirstOrDefaultAsync(
+                    x => x.ViagemId == viagemId &&
+                         x.NumeroAssento == numeroAssento,
+                    cancellationToken);
+        }
+
+        public async Task CancelarAsync(
+            Reserva reserva,
+            CancellationToken cancellationToken)
+        {
+            _context.Reservas.Update(reserva);
+            await _context.SaveChangesAsync(cancellationToken);
         }
     }
 }

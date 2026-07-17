@@ -1,24 +1,44 @@
-﻿using OnibusExpress.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using OnibusExpress.Domain.Entities;
 using OnibusExpress.Domain.Interfaces;
+using OnibusExpress.Infrastructure.Context;
 
 namespace OnibusExpress.Infrastructure.Repositories
 {
-    public class PassageirosRepository : IPassageirosRepository
+    public class PassageirosRepository(OnibusExpressContext context) : IPassageirosRepository
     {
-        public Task CriarAsync(Passageiro passageiro, CancellationToken cancellationToken)
+        private readonly OnibusExpressContext _context = context;
+
+        public async Task CriarAsync(
+            Passageiro passageiro,
+            CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            await _context.Passageiros.AddAsync(
+                passageiro,
+                cancellationToken);
+
+            await _context.SaveChangesAsync(cancellationToken);
         }
 
-        public Task<Passageiro?> ObterPorIdAsync(Guid id, CancellationToken cancellationToken)
+        public async Task<Passageiro?> ObterPorIdAsync(
+             Guid id,
+             CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return await _context.Passageiros
+                .FirstOrDefaultAsync(
+                    x => x.Id == id,
+                    cancellationToken);
         }
 
-        public Task<Passageiro?> AtualizarAsync(Guid id, Passageiro request, CancellationToken cancellationToken)
+        public async Task<Passageiro?> AtualizarAsync(
+             Passageiro request,
+             CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            _context.Passageiros.Update(request);
+
+            await _context.SaveChangesAsync(cancellationToken);
+
+            return request;
         }
-        
     }
 }

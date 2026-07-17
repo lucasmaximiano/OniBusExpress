@@ -35,19 +35,5 @@ namespace OnibusExpress.Domain.Entities
             PrecoBase = precoBase;
             AssentosDisponiveis = assentosDisponiveis;
         }
-
-        public void ReservarAssento()
-        {
-            if (AssentosDisponiveis <= 0)
-                throw new InvalidOperationException(
-                    "Não existem assentos disponíveis.");
-
-            AssentosDisponiveis--;
-        }
-
-        public void LiberarAssento()
-        {
-            AssentosDisponiveis++;
-        }
     }
 }

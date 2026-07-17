@@ -75,7 +75,6 @@ namespace OnibusExpress.Application.Service
                                 request.DataNascimento);
 
             await _passageirosRepository.AtualizarAsync(
-                                                        id,
                                                         passageiro,
                                                         cancellationToken);
 

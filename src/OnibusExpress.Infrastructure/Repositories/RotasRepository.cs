@@ -1,18 +1,33 @@
-﻿using OnibusExpress.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using OnibusExpress.Domain.Entities;
 using OnibusExpress.Domain.Interfaces;
+using OnibusExpress.Infrastructure.Context;
 
 namespace OnibusExpress.Infrastructure.Repositories
 {
-    public class RotasRepository : IRotasRepository
+    public class RotasRepository(OnibusExpressContext context) : IRotasRepository
     {
-        public Task CriarAsync(Rota request, CancellationToken cancellationToken)
+        private readonly OnibusExpressContext _context = context;
+
+        public async Task CriarAsync(
+            Rota request,
+            CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            await _context.Rotas.AddAsync(
+                request,
+                cancellationToken);
+
+            await _context.SaveChangesAsync(cancellationToken);
         }
 
-        public Task<Rota?> ObterPorIdAsync(Guid id, CancellationToken cancellationToken)
+        public async Task<Rota?> ObterPorIdAsync(
+            Guid id,
+            CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return await _context.Rotas
+                .FirstOrDefaultAsync(
+                    x => x.Id == id,
+                    cancellationToken);
         }
     }
 }

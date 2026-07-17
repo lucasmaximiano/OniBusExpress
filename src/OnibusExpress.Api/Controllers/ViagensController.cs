@@ -49,7 +49,7 @@ namespace OnibusExpress.Api.Controllers
             [FromQuery] string destino,
             CancellationToken cancellationToken)
         {
-            ViagemResponse? response = await _application.ObterPorFiltro(
+            IEnumerable<ViagemResponse> response = await _application.ObterPorFiltroAsync(
                 origem,
                 destino,
                 cancellationToken);

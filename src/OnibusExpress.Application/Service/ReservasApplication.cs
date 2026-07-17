@@ -38,12 +38,12 @@ namespace OnibusExpress.Application.Service
                 throw new InvalidOperationException(
                     "Não é possível reservar passagem para uma viagem já realizada.");
 
-            bool assentoOcupado = await _reservaRepository.AssentoEstaOcupadoAsync(
+            Reserva? assentoOcupado = await _reservaRepository.ObterReservaPorViagemEAssentoAsync(
                 request.ViagemId,
                 request.NumeroAssento,
                 cancellationToken);
 
-            if (assentoOcupado)
+            if (assentoOcupado != null)
             {
                 throw new InvalidOperationException(
                     $"O assento {request.NumeroAssento} já está ocupado nesta viagem.");
@@ -104,7 +104,7 @@ namespace OnibusExpress.Application.Service
             reserva.Cancelar();
 
             await _reservaRepository.CancelarAsync(
-                codigoReserva,
+                reserva,
                 cancellationToken);
         }
 

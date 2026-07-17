@@ -1,23 +1,49 @@
-﻿using OnibusExpress.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using OnibusExpress.Domain.Entities;
 using OnibusExpress.Domain.Interfaces;
+using OnibusExpress.Infrastructure.Context;
 
 namespace OnibusExpress.Infrastructure.Repositories
 {
-    public class ViagensRepository : IViagensRepository
+    public class ViagensRepository(OnibusExpressContext context) : IViagensRepository
     {
-        public Task CriarAsync(Viagem request, CancellationToken cancellationToken)
+        private readonly OnibusExpressContext _context = context;
+
+        public async Task CriarAsync(
+            Viagem request,
+            CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            await _context.Viagens.AddAsync(
+                request,
+                cancellationToken);
+
+            await _context.SaveChangesAsync(cancellationToken);
         }
 
-        public Task<Viagem?> ObterPorFiltro(string viagem, string destino, CancellationToken cancellationToken)
+        public async Task<Viagem?> ObterPorIdAsync(
+            Guid id,
+            CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return await _context.Viagens
+                .Include(x => x.Rota)
+                .FirstOrDefaultAsync(
+                    x => x.Id == id,
+                    cancellationToken);
         }
 
-        public Task<Viagem?> ObterPorIdAsync(Guid id, CancellationToken cancellationToken)
+        public async Task<IEnumerable<Viagem>> ObterPorFiltroAsync(
+            string viagem,
+            string destino,
+            CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return await _context.Viagens
+                .Include(x => x.Rota)
+                .Where(x =>
+                    (string.IsNullOrWhiteSpace(viagem) ||
+                     x.Rota.Origem.Contains(viagem)) &&
+                    (string.IsNullOrWhiteSpace(destino) ||
+                     x.Rota.Destino.Contains(destino)))
+                .ToListAsync(cancellationToken);
         }
     }
 }

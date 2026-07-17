@@ -12,11 +12,16 @@ namespace OnibusExpress.Domain.Interfaces
            string codigoReserva,
            CancellationToken cancellationToken);
 
+        Task<Reserva?> ObterReservaPorViagemEAssentoAsync(
+            Guid viagemId,
+            int numeroAssento,
+            CancellationToken cancellationToken);
+
         Task<IEnumerable<Reserva>> ObterTodasAsync(
             CancellationToken cancellationToken);
 
         Task CancelarAsync(
-            string codigoReserva,
+            Reserva reserva,
             CancellationToken cancellationToken);
     }
 }

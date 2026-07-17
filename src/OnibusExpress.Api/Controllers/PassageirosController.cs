@@ -47,9 +47,9 @@ namespace OnibusExpress.Api.Controllers
         [ProducesResponseType(typeof(ValidationProblemDetails),StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> AtualizarAsync(
-          Guid id,
-          [FromBody] UpdatePassageiroRequest request,
-          CancellationToken cancellationToken)
+            Guid id,
+            [FromBody] UpdatePassageiroRequest request,
+            CancellationToken cancellationToken)
         {
             PassageiroResponse? response = await _application.AtualizarAsync(
                 id,

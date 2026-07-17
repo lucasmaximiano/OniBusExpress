@@ -29,8 +29,8 @@ namespace OnibusExpress.Api.Controllers
         [ProducesResponseType(typeof(ReservaResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> ObterPorCodigoAsync(
-              string codigoReserva,
-              CancellationToken cancellationToken)
+            string codigoReserva,
+            CancellationToken cancellationToken)
         {
             ReservaResponse? response = await _application.ObterPorCodigoAsync(
                 codigoReserva,

@@ -13,7 +13,6 @@ namespace OnibusExpress.Domain.Interfaces
           CancellationToken cancellationToken);
 
         Task<Passageiro?> AtualizarAsync(
-            Guid id,
             Passageiro request,
             CancellationToken cancellationToken);
     }
