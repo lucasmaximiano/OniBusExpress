@@ -24,8 +24,6 @@ services:
     depends_on:
       sqlserver:
         condition: service_healthy
-      sqlserver-init:
-        condition: service_completed_successfully
 
     restart: unless-stopped
 
@@ -56,37 +54,10 @@ services:
         ]
       interval: 10s
       timeout: 5s
-      retries: 10
-      start_period: 20s
+      retries: 15
+      start_period: 30s
 
     restart: unless-stopped
-
-    networks:
-      - onibusexpress-network
-
-  sqlserver-init:
-    container_name: onibusexpress-sqlserver-init
-
-    image: mcr.microsoft.com/mssql-tools
-
-    depends_on:
-      sqlserver:
-        condition: service_healthy
-
-    volumes:
-      - ./database/init.sql:/scripts/init.sql:ro
-
-    command: >
-      /bin/bash -c "
-      /opt/mssql-tools18/bin/sqlcmd
-      -S sqlserver,1433
-      -U sa
-      -P 'SuaSenha@123'
-      -C
-      -i /scripts/init.sql
-      "
-
-    restart: "no"
 
     networks:
       - onibusexpress-network
