@@ -36,14 +36,13 @@ public class ValidationExceptionMiddleware(
             "Erro de validação na requisição {Path}.",
             context.Request.Path);
 
-        Dictionary<string, string[]> errors = exception.Errors
-            .GroupBy(error => error.PropertyName)
+        var errors = exception.Errors
+            .GroupBy(x => x.PropertyName)
             .ToDictionary(
-                group => group.Key,
-                group => group
-                    .Select(error => error.ErrorMessage)
-                    .Distinct()
-                    .ToArray());
+                g => g.Key,
+                g => g.Select(x => x.ErrorMessage).ToArray());
+
+        var firstError = exception.Errors.First();
 
         ValidationProblemDetails problemDetails = new(errors)
         {
@@ -53,6 +52,9 @@ public class ValidationExceptionMiddleware(
             Detail = "Verifique os campos informados.",
             Instance = context.Request.Path
         };
+
+        problemDetails.Extensions["field"] = firstError.PropertyName;
+        problemDetails.Extensions["message"] = firstError.ErrorMessage;
 
         await WriteProblemDetailsAsync(context, problemDetails);
     }

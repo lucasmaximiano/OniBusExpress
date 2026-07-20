@@ -6,6 +6,6 @@
     <Project Path="src/OnibusExpress.Infrastructure/OnibusExpress.Infrastructure.csproj" />
   </Folder>
   <Folder Name="/tests/">
-    <Project Path="tests/OnibusExpress.Tests/OnibusExpress.Tests.csproj" />
+    <Project Path="OnibusExpress.Tests/OnibusExpress.Tests.csproj" Id="95301c40-2a21-4099-b461-f472a3039864" />
   </Folder>
 </Solution>
